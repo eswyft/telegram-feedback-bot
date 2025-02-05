@@ -64,13 +64,14 @@ async def text_message(message: Message, bot: Bot, l10n: FluentLocalization):
     elif message.from_user.id in shadowbanned:
         return
     else:
+        link = f'#id{message.from_user.id} '
         if message.from_user.username:
-            link = f'@{message.from_user.username}'
+            link += f'@{message.from_user.username}'
         else:
-            link = f'<a href="tg://user?id={message.from_user.full_name}"></a>'
+            link += f'<a href="tg://user?id={message.from_user.full_name}"></a>'
         await bot.send_message(
             config.admin_chat_id,
-            link + ':\n' + message.html_text, parse_mode="HTML"
+            link + ':\n\n' + message.html_text, parse_mode="HTML"
         )
         if config.send_sent_confirmation:
             create_task(_send_expiring_notification(message, l10n))

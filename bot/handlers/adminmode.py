@@ -20,11 +20,11 @@ def extract_id(message: Message) -> int:
     # Получение списка сущностей (entities) из текста или подписи к медиафайлу в отвечаемом сообщении
     entities = message.entities or message.caption_entities
     # Если всё сделано верно, то последняя (или единственная) сущность должна быть хэштегом...
-    if not entities or entities[-1].type != "hashtag":
+    if not entities or entities[0].type != "hashtag":
         raise ValueError("Не удалось извлечь ID для ответа!")
 
     # ... более того, хэштег должен иметь вид #id123456, где 123456 — ID получателя
-    hashtag = entities[-1].extract_from(message.text or message.caption)
+    hashtag = entities[0].extract_from(message.text or message.caption)
     if len(hashtag) < 4 or not hashtag[3:].isdigit():  # либо просто #id, либо #idНЕЦИФРЫ
         raise ValueError("Некорректный ID для ответа!")
 
