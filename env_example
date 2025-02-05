@@ -13,6 +13,9 @@ ADMIN_CHAT_ID=987654321
 # Чтобы удалялось, укажите "yes", "1" или "true" (без кавычек)
 REMOVE_SENT_CONFIRMATION=yes
 
+# Отправлять ли их вообще
+SEND_SENT_CONFIRMATION=no
+
 # Основной домен для установки вебхука
 # Если значение непустое, считаем, что бот работает по вебхукам
 # WEBHOOK_DOMAIN=feedbackbot.example.com

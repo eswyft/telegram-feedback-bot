@@ -68,7 +68,8 @@ async def text_message(message: Message, bot: Bot, l10n: FluentLocalization):
             config.admin_chat_id,
             message.html_text + f"\n\n#id{message.from_user.id}", parse_mode="HTML"
         )
-        create_task(_send_expiring_notification(message, l10n))
+        if config.send_sent_confirmation:
+            create_task(_send_expiring_notification(message, l10n))
 
 
 @router.message(SupportedMediaFilter())
@@ -92,7 +93,8 @@ async def supported_media(message: Message, l10n: FluentLocalization):
             caption=((message.caption or "") + f"\n\n#id{message.from_user.id}"),
             parse_mode="HTML"
         )
-        create_task(_send_expiring_notification(message, l10n))
+        if config.send_sent_confirmation:
+            create_task(_send_expiring_notification(message, l10n))
 
 
 @router.message()

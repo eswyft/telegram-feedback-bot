@@ -7,6 +7,7 @@ class Settings(BaseSettings):
     bot_token: SecretStr
     admin_chat_id: int
     remove_sent_confirmation: bool
+    send_sent_confirmation: bool
     webhook_domain: Optional[str]
     webhook_path: Optional[str]
     app_host: Optional[str] = "0.0.0.0"
