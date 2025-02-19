@@ -37,17 +37,6 @@ async def cmd_start(message: Message, l10n: FluentLocalization):
     await message.answer(l10n.format_value("intro"))
 
 
-@router.message(Command(commands=["help"]))
-async def cmd_help(message: Message, l10n: FluentLocalization):
-    """
-    Справка для пользователя
-
-    :param message: сообщение от пользователя с командой /help
-    :param l10n: объект локализации
-    """
-    await message.answer(l10n.format_value("help"))
-
-
 @router.message(F.text)
 async def text_message(message: Message, bot: Bot, l10n: FluentLocalization):
     """

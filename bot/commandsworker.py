@@ -5,11 +5,6 @@ from bot.config_reader import config
 
 
 async def set_bot_commands(bot: Bot):
-    usercommands = [
-        BotCommand(command="help", description="Справка по использованию бота"),
-    ]
-    await bot.set_my_commands(usercommands, scope=BotCommandScopeDefault())
-
     admin_commands = [
         BotCommand(command="who", description="Получение информации о пользователе"),
         BotCommand(command="ban", description="Заблокировать пользователя"),
