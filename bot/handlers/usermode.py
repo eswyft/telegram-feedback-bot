@@ -13,6 +13,16 @@ from bot.filters import SupportedMediaFilter
 router = Router()
 
 
+def message_header(message: Message) -> str:
+    s = f'#id{message.from_user.id} '
+    if message.from_user.username:
+        s += f'@{message.from_user.username}'
+    else:
+        s += f'<a href="tg://user?id={message.from_user.id}">{message.from_user.full_name}</a>'
+    s += ':\n\n'
+    return s
+
+
 async def _send_expiring_notification(message: Message, l10n: FluentLocalization):
     """
     Отправляет "самоуничтожающееся" через 5 секунд сообщение
@@ -53,15 +63,9 @@ async def text_message(message: Message, bot: Bot, l10n: FluentLocalization):
     elif message.from_user.id in shadowbanned:
         return
     else:
-        link = f'#id{message.from_user.id} '
-        if message.from_user.username:
-            link += f'@{message.from_user.username}'
-        else:
-            link += f'<a href="tg://user?id={message.from_user.id}">{message.from_user.full_name}</a>'
-        await bot.send_message(
-            config.admin_chat_id,
-            link + ':\n\n' + message.html_text, parse_mode="HTML"
-        )
+        s = message_header(message)
+        s += message.html_text
+        await bot.send_message(config.admin_chat_id, s, parse_mode="HTML")
         if config.send_sent_confirmation:
             create_task(_send_expiring_notification(message, l10n))
 
@@ -82,9 +86,14 @@ async def supported_media(message: Message, l10n: FluentLocalization):
     elif message.from_user.id in shadowbanned:
         return
     else:
+        s = message_header(message)
+        if message.caption:
+            s += message.caption
+        else:
+            s = s.strip()
         await message.copy_to(
             config.admin_chat_id,
-            caption=((message.caption or "") + f"\n\n#id{message.from_user.id}"),
+            caption=s,
             parse_mode="HTML"
         )
         if config.send_sent_confirmation:
