@@ -57,7 +57,7 @@ async def text_message(message: Message, bot: Bot, l10n: FluentLocalization):
         if message.from_user.username:
             link += f'@{message.from_user.username}'
         else:
-            link += f'<a href="tg://user?id={message.from_user.full_name}"></a>'
+            link += f'<a href="tg://user?id={message.from_user.id}">{message.from_user.full_name}</a>'
         await bot.send_message(
             config.admin_chat_id,
             link + ':\n\n' + message.html_text, parse_mode="HTML"
